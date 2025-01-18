@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Clone</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #ffffff;
+            color: #202124;
+            overflow-x: hidden;
+            cursor: url('Hello Kitty normal select.cur'), auto;
+        }
+
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .falling-image {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: url('ddonyang.png') no-repeat center;
+            background-size: contain;
+            animation: falling 3s linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes falling {
+            0% {
+                transform: translateY(-100px);
+                opacity: 1;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(110vh);
+                opacity: 0;
+            }
+        }
+
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: transparent;
+        }
+
+        .header img {
+            width: 300px;
+            margin-bottom: 20px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            max-width: 580px;
+            border: 1px solid #dfe1e5;
+            border-radius: 24px;
+            padding: 10px;
+            background-color: white;
+            box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+        }
+
+        .search-box input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            padding: 5px;
+            cursor: url('Hello Kitty vertical resize.cur'), auto;
+        }
+
+        .search-box input:hover {
+            cursor: url('Hello Kitty normal select.cur'), auto;
+        }
+
+        .search-box button {
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .search-box button:hover {
+            cursor: url('Hello Kitty precision select.cur'), auto;
+        }
+
+        .results {
+            display: none;
+            padding: 20px;
+        }
+
+        .results.active {
+            display: block;
+        }
+
+        .top-bar {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            background: white;
+            border-bottom: 1px solid #ddd;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .top-bar img {
+            height: 30px;
+            margin-right: 10px;
+        }
+
+        .categories {
+            display: flex;
+            justify-content: start;
+            gap: 20px;
+            margin-top: 10px;
+            padding: 0 20px;
+        }
+
+        .categories button {
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 5px 10px;
+        }
+
+        .categories button.active {
+            border-bottom: 2px solid #4285f4;
+            font-weight: bold;
+        }
+
+        .result-item {
+            display: flex;
+            align-items: start;
+            margin: 20px 0;
+            font-size: 14px;
+            color: #4d5156;
+        }
+
+        .result-item a {
+            font-size: 18px;
+            color: #1a73e8;
+            text-decoration: none;
+        }
+
+        .result-item a:hover {
+            text-decoration: underline;
+        }
+
+        .result-item .url {
+            font-size: 14px;
+            color: #006621;
+            margin-bottom: 5px;
+        }
+
+        .result-item .description {
+            margin-top: 5px;
+        }
+
+        .result-item img {
+            width: 120px;
+            height: 90px;
+            margin-right: 10px;
+            border-radius: 8px;
+        }
+
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .footer a {
+            font-size: 16px;
+            text-decoration: none;
+            color: #1a73e8;
+        }
+    </style>
+    <script>
+        function showResults() {
+            document.getElementById('home').style.display = 'none';
+            document.getElementById('results').classList.add('active');
+        }
+
+        function showCategory(category) {
+            const allResults = document.getElementById('allResults');
+            const videoResults = document.getElementById('videoResults');
+            const webResults = document.getElementById('webResults');
+            
+            allResults.style.display = 'none';
+            videoResults.style.display = 'none';
+            webResults.style.display = 'none';
+
+            if (category === 'all') {
+                allResults.style.display = 'block';
+            } else if (category === 'video') {
+                videoResults.style.display = 'block';
+            } else if (category === 'web') {
+                webResults.style.display = 'block';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchButton = document.getElementById('searchButton');
+            const searchInput = document.getElementById('searchInput');
+
+            searchButton.addEventListener('click', showResults);
+
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    showResults();
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <audio id="backgroundMusic" src="baby.mp3" autoplay loop></audio>
+
+    <div class="background">
+        <div class="falling-image" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="falling-image" style="left: 30%; animation-delay: 1s;"></div>
+        <div class="falling-image" style="left: 50%; animation-delay: 2s;"></div>
+        <div class="falling-image" style="left: 70%; animation-delay: 3s;"></div>
+        <div class="falling-image" style="left: 90%; animation-delay: 4s;"></div>
+    </div>
+
+    <div class="header" id="home">
+        <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png" alt="Google Logo">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search Google or type a URL">
+            <button id="searchButton">🔍</button>
+        </div>
+    </div>
+
+    <div class="results" id="results">
+        <div class="top-bar">
+            <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png" alt="Google Logo">
+            <div class="search-box">
+                <input type="text" id="searchInputResults">
+            </div>
+        </div>
+
+        <div class="categories">
+            <button id="allTab" class="active" onclick="showCategory('all')">All</button>
+            <button id="videoTab" onclick="showCategory('video')">Videos</button>
+            <button id="webTab" onclick="showCategory('web')">Web</button>
+        </div>
+
+        <div class="content" id="allResults">
+            <div class="result-item">
+                <img src="https://img.youtube.com/vi/82xIarXCVR4/hqdefault.jpg" alt="Video Thumbnail">
+                <div>
+                    <a href="https://youtu.be/82xIarXCVR4" target="_blank">또냥이 인생네컷</a>
+                    <p>YouTube - 재천광인 • Jan 9, 2025</p>
+                </div>
+            </div>
+
+            <div class="result-item">
+                <img src="https://img.youtube.com/vi/82xIarXCVR4/hqdefault.jpg" alt="Video Thumbnail">
+                <div>
+                    <a href="https://youtu.be/82xIarXCVR4" target="_blank">또냥이 먹방</a>
+                    <p>YouTube - 재천광인 • Jan 9, 2025</p>
+                </div>
+            </div>
+
+            <div class="result-item">
+                <img src="vlog.jpg" alt="Naver Blog Logo" style="width: 16px; height: 16px; margin-right: 5px; vertical-align: middle;">
+                <div>
+                    <a href="https://blog.naver.com/dkfkatngus04/223729765245" target="_blank">또냥이 키우는 방법</a>
+                    <p class="description">네이버 블로그<br>또냥이를 잘 키우려면 주의할 점들이 있어요...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
